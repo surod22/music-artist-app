@@ -1,15 +1,39 @@
 var express = require('express');
 var path = require('path');
 var app = express();
-
 const https = require('https');
+var bodyParser = require('body-parser');
+
+var fs = require('fs');
+var ARTISTS_FILE = path.join(__dirname, 'defaultArtists.json');
 
 app.set('port', (process.env.PORT || 8080));
 
-app.use('/', express.static(path.join(__dirname, 'public')));
 
-app.get('api/artists', function(request, response) {
-    res.send('WHATS up');
+app.use('/', express.static(path.join(__dirname, 'public')));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
+
+app.get('/api/artists', function(req, res) {
+
+  fs.readFile(ARTISTS_FILE, function(err, data) {
+    if (err) {
+      console.error(err);
+      process.exit(1);
+    }
+    process.stdout.write(data);
+    res.json(JSON.parse(data));
+    console.log(data);
+
+  });
+
+
+  //res.send("what the ehck ");
+});
+
+app.get('/main', function(request, response) {
+
+    response.send('I am main');
 });
 
 app.get('/api/artists/search', function(request, response) {

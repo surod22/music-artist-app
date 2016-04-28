@@ -1,0 +1,38 @@
+[
+  {
+    "artistName": "The Weeknd",
+    "artistId": 1,
+    "artistDescription": "Feat. Auguts Alsina, Jeremih and more",
+    "imageUrl": "http://iscale.iheart.com/catalog/artist/744880?ops=fit(250,0)"
+  },
+  {
+    "artistName": "Selena Gomez",
+    "artistId": 2,
+    "artistDescription": "Feat. Ariana Grande, Demi Lovato and more",
+    "imageUrl": "http://iscale.iheart.com/catalog/artist/57706?ops=fit(250,0)"
+  },
+  {
+    "artistName": "R. City",
+    "artistId": 3,
+    "artistDescription": "Feat. Nelly, Ivaz, Wiz Khalifa and more",
+    "imageUrl": "http://iscale.iheart.com/catalog/artist/30005067?ops=fit(250,0)"
+  },
+  {
+    "artistName": "Justin Bieber",
+    "artistId": 4,
+    "artistDescription": "Feat. Shawn Mendes, One Direction and more",
+    "imageUrl": "http://iscale.iheart.com/catalog/artist/44368?ops=fit(250,0)"
+  },
+  {
+    "artistName": "Major Lazer",
+    "artistId": 5,
+    "artistDescription": "Feat. Iyaz, Dillion Francis & DJ Snake and more",
+    "imageUrl": "http://iscale.iheart.com/catalog/artist/43557?ops=fit(250,0)"
+  },{
+    "artistName": "Taylor Swift",
+    "artistId": 6,
+    "artistDescription": "Feat. Meghan Trainor, Katy Perry and more",
+    "imageUrl": "http://iscale.iheart.com/catalog/artist/33221?ops=fit(250,0)"
+  }
+
+]
