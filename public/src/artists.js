@@ -36,7 +36,20 @@ var ArtistsBlock = React.createClass({
     }
 });
 
+var Artist = React.createClass({
+    render: function(){
+        return(
+            <div className= "col-md-4">
+                <div className="row">
+                <h3> {this.props.data.artistName}</h3>
+                {this.props.data.artistDescription}
+                <img src={this.props.data.imageUrl} className="img-responsive thumbnail"/>
+                </div>
+            </div>
+        );
 
+    }
+});
 
 var ArtistList = React.createClass({
 
@@ -44,18 +57,19 @@ var ArtistList = React.createClass({
             var artists = this.props.data.map(function(artist) {
 
                 return (
-                        <div>
-                        <h3> {artist.artistName}</h3>
-                        <div> {artist.artistDescription} </div>
-                       {artist.imageUrl}
-                        <div> <img src={artist.imageUrl} className='img-responsive'/></div>
-                        </div>
+
+                        <Artist key={artist.artistId} data={artist}/>
+
                 );
 
             });
             return (
-                <div className="artistsList">
-                    <span> {artists} </span>
+                <div className="container">
+                    <div className="artistList">
+                    <div className="row">
+                        {artists}
+                    </div>
+                    </div>
                 </div>
             );
         }
