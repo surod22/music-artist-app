@@ -1,0 +1,10 @@
+{
+	"name": "artists-app",
+	"version": "0.0.0",
+	"description": "Shows artists",
+	"main": "server.js",
+	"dependencies": {
+	  "express": "^4.4.5"
+	}
+
+}

@@ -1,0 +1,11 @@
+brew install node
+
+node -v
+npm -v
+
+Search api endpoint
+
+http://localhost:8080/api/artists/search?keywords=taylor
+
+https://api-3283.iheart.com/api/v1/catalog/searchAll?keywords=taylor&queryTrack=false&queryBundle=false&queryArtist=true&queryStation=false&queryFeaturedStation=false&queryTalkShow=false&queryTalkTheme=false&queryKeyword=false&countryCode=US
+
