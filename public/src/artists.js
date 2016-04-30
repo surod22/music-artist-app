@@ -2,13 +2,18 @@
 
 var ArtistsBlock = React.createClass({
 
-    loadCommentsFromServer: function() {
+    loadArtistsFromServer: function() {
+        console.log("Checking Filtered at load" + this.state.filteredData);
         $.ajax({
           url: this.props.url,
           dataType: 'json',
           cache: false,
           success: function(data) {
-            this.setState({data: data});
+            this.setState({
+                data: data,
+                query: '',
+                filteredData: this.state.filteredData
+                });
           }.bind(this),
           error: function(xhr, status, err) {
             console.error(this.props.url, status, err.toString());
@@ -16,30 +21,114 @@ var ArtistsBlock = React.createClass({
         });
      },
 
+
+    handleSubmit: function(event) {
+        event.preventDefault();
+
+        this.setState({
+            query:this.state.query,
+            filteredData: this.state.filteredData,
+            data: this.state.data
+        });
+
+        console.log("QUERY value:" + this.state.query)
+        var query = this.state.query;
+
+        console.log("Hello, is this what youare looking for?" + this.state.query);
+
+        var urlSearch = this.props.url + "/search" + "?keywords="+ query;
+        $.ajax({
+            url: urlSearch,
+            dataType: 'json',
+            success: function(filteredData){
+                this.setState({
+                    data: this.state.data,
+                    filteredData: filteredData,
+                    query: query
+                });
+            }.bind(this),
+            error: function(xhr, status, err) {
+                console.error(this.props.url, status, err.toString());
+            }.bind(this)
+        });
+
+        this.setState({
+            query:'',
+            filteredData: this.filteredData,
+            data: this.state.data
+        })
+
+        console.log("Filtered Updated" + this.state.filteredData)
+    },
+
     getInitialState: function() {
-        return {data: []};
+        return {
+            data: [],
+            filteredData: [],
+            query: ''
+         };
+    },
+
+    handleQueryChange: function(event){
+
+        this.setState({query: event.target.value});
+        console.log("THIS query:" + this.state.query);
+
     },
 
     componentDidMount: function() {
-        this.loadCommentsFromServer();
-        setInterval(this.loadCommentsFromServer, this.props.pollInterval);
+        this.loadArtistsFromServer();
+        setInterval(this.loadArtistsFromServer, this.props.pollInterval);
+
     },
 
     render: function() {
         return (
             <div className="artistsBlock">
-            <h1>Artists</h1>
-            <ArtistList data={this.state.data} />
+                <div className="row">
+                    <h1>Artists</h1>
+                    <section>
+                    <form  onSubmit={this.handleSubmit}  >
+
+                        <input   type="text"
+                            placeholder="Search here"
+                            value={this.state.value}
+                            onChange={this.handleQueryChange}
+                        />
+                        <input type="submit" value="Post" />
+                        <span>{this.state.state}</span>
+                    </form>
+                </section>
+            </div>
+
+                <ArtistList data={this.state.data} filteredData={this.state.filteredData} />
+
             </div>
 
         );
     }
 });
 
+var FilteredData = React.createClass({
+    render:function(){
+        var artistProperties = this.props.data;
+        return(
+
+            <div className="col-md-4">
+                <div className="row">
+                    <div>{this.props.index}
+                    <pre>{JSON.stringify(artistProperties, null, 15)}</pre></div>
+                </div>
+            </div>
+        );
+    }
+});
+
 var Artist = React.createClass({
     render: function(){
+
         return(
-            <div className= "col-md-4">
+            <div className="col-md-4">
                 <div className="row">
                 <h3> {this.props.data.artistName}</h3>
                 {this.props.data.artistDescription}
@@ -54,15 +143,40 @@ var Artist = React.createClass({
 var ArtistList = React.createClass({
 
         render: function(){
-            var artists = this.props.data.map(function(artist) {
+            var queryValue = this.props.query;
+            var artists;
 
-                return (
+            if(queryValue === undefined &&
+                (this.props.filteredData == null
+                || this.props.filteredData.length == 0
+                || this.props.filteredData.artists == null )){
 
-                        <Artist key={artist.artistId} data={artist}/>
+                console.log("Default artists");
+                     artists = this.props.data.map(function(artist) {
+                        return (
+                            <Artist key={artist.artistId} data={artist}/>
+                        );
 
-                );
+                     });
+            }else{
 
-            });
+                console.log("Returning filtered artists");
+                console.log(this.props.filteredData);
+                if(this.props.filteredData.artists.length==0){
+                    console.log("NO RESUTS");
+                    artists = <h3> No artists found. </h3>;
+                }else {
+                    artists = this.props.filteredData.artists.map(function(artistAllData, index){
+                        if(index<6){
+                            return (
+                            <FilteredData key={index} data={artistAllData} index={index}/>
+                            );
+                        }else
+                            return;
+                    });
+                }
+            }
+
             return (
                 <div className="container">
                     <div className="artistList">

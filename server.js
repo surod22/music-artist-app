@@ -58,7 +58,7 @@ app.get('/api/artists/search', function(request, response) {
 
         res.on('data', (d) => {
             response.json(JSON.parse(d));
-            //process.stdout.write(d);
+            process.stdout.write(d);
         });
 
     }).on('error', (e) => {
