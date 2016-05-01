@@ -89,14 +89,12 @@ var ArtistsBlock = React.createClass({
                     <h1>Artists</h1>
                     <section>
                     <form  onSubmit={this.handleSubmit}  >
-
                         <input   type="text"
                             placeholder="Search here"
                             value={this.state.value}
                             onChange={this.handleQueryChange}
                         />
-                        <input type="submit" value="Post" />
-                        <span>{this.state.state}</span>
+                        <input type="submit" value="Search" />
                     </form>
                 </section>
             </div>
@@ -114,11 +112,9 @@ var FilteredData = React.createClass({
         var artistProperties = this.props.data;
         return(
 
-            <div className="col-md-4">
-                <div className="row">
+            <div className="responsive">
                     <div>{this.props.index}
-                    <pre>{JSON.stringify(artistProperties, null, 15)}</pre></div>
-                </div>
+                    <pre className="responsive-img wrapper">{JSON.stringify(artistProperties, null, 15)}</pre></div>
             </div>
         );
     }
@@ -128,12 +124,12 @@ var Artist = React.createClass({
     render: function(){
 
         return(
-            <div className="col-md-4">
-                <div className="row">
-                <h3> {this.props.data.artistName}</h3>
-                {this.props.data.artistDescription}
-                <img src={this.props.data.imageUrl} className="img-responsive thumbnail"/>
+            <div className="responsive">
+                <div class="text">
+                    <h3> {this.props.data.artistName}</h3>
+                    {this.props.data.artistDescription}
                 </div>
+                <div className= "margin-img" > <img src={this.props.data.imageUrl} className="responsive-img wrapper" /> </div>
             </div>
         );
 

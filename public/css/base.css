@@ -60,3 +60,45 @@ p, ul {
 ul {
   padding-left: 30px;
 }
+
+pre {
+    width: auto;
+}
+
+.responsive {
+    padding: 0 8px;
+    float: left;
+    width: 32.999%;
+}
+
+.text {
+    padding: 0 15px;
+    width: 100%;
+}
+
+.margin-img{
+    padding: 4px;
+}
+.wrapper{
+    display: block;
+    margin-top: 5px;
+    margin-bottom: 20px;
+    line-height: 1.42857143;
+    border-radius: 4px;
+    transition: border .2s ease-in-out;
+    transition: width .1s;
+}
+
+.responsive-img {
+    max-width: 100%;
+    height: auto;
+}
+
+@media only screen and (max-width: 768px) {
+    .responsive {
+        width: 50%;
+        margin: 6px 0;
+    }
+}
+
+

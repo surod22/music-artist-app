@@ -1,11 +1,26 @@
-brew install node
 
+brew install node
 node -v
 npm -v
 
-Search api endpoint
+Install dependencies
+npm install
 
+Run server
+node server.js
+
+
+Search api endpoint
 http://localhost:8080/api/artists/search?keywords=taylor
 
+
+ihear media endpoint used for searching
 https://api-3283.iheart.com/api/v1/catalog/searchAll?keywords=taylor&queryTrack=false&queryBundle=false&queryArtist=true&queryStation=false&queryFeaturedStation=false&queryTalkShow=false&queryTalkTheme=false&queryKeyword=false&countryCode=US
 
+
+Requirements:
+- When browser window width is 768px or less, images are in 2x3 grid
+- When browser window width is 769px or more, images are in 3x2 grid
+- Full row of images should be completely visible within the browser width at all times
+- Transition between 2x3 and 3x2 should be made as smooth as possible
+- Images should grow in size (as long as they are completely visible within the browser) until they reach 250px width
