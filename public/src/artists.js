@@ -1,8 +1,7 @@
-
-
 var ArtistsBlock = React.createClass({
 
     loadArtistsFromServer: function() {
+
         console.log("Checking Filtered at load" + this.state.filteredData);
         $.ajax({
           url: this.props.url,
@@ -19,24 +18,25 @@ var ArtistsBlock = React.createClass({
             console.error(this.props.url, status, err.toString());
           }.bind(this)
         });
+
      },
 
 
     handleSubmit: function(event) {
+
         event.preventDefault();
 
         this.setState({
-            query:this.state.query,
+            query: this.refs.box.value,
             filteredData: this.state.filteredData,
             data: this.state.data
         });
 
-        console.log("QUERY value:" + this.state.query)
-        var query = this.state.query;
-
-        console.log("Hello, is this what youare looking for?" + this.state.query);
-
+        var query = this.refs.box.value;
         var urlSearch = this.props.url + "/search" + "?keywords="+ query;
+
+        this.refs.box.value = "";
+
         $.ajax({
             url: urlSearch,
             dataType: 'json',
@@ -58,10 +58,10 @@ var ArtistsBlock = React.createClass({
             data: this.state.data
         })
 
-        console.log("Filtered Updated" + this.state.filteredData)
     },
 
     getInitialState: function() {
+
         return {
             data: [],
             filteredData: [],
@@ -72,11 +72,10 @@ var ArtistsBlock = React.createClass({
     handleQueryChange: function(event){
 
         this.setState({query: event.target.value});
-        console.log("THIS query:" + this.state.query);
-
     },
 
     componentDidMount: function() {
+
         this.loadArtistsFromServer();
         setInterval(this.loadArtistsFromServer, this.props.pollInterval);
 
@@ -84,20 +83,23 @@ var ArtistsBlock = React.createClass({
 
     render: function() {
         return (
+
             <div className="artistsBlock">
                 <div className="row">
                     <h1>Artists</h1>
                     <section>
-                    <form  onSubmit={this.handleSubmit}  >
-                        <input   type="text"
-                            placeholder="Search here"
-                            value={this.state.value}
-                            onChange={this.handleQueryChange}
-                        />
-                        <input type="submit" value="Search" />
-                    </form>
-                </section>
-            </div>
+                        <form  onSubmit={this.handleSubmit}  >
+                            <input
+                                type="text"
+                                placeholder="Search here"
+                                value={this.state.value}
+                                onChange={this.handleQueryChange}
+                                ref="box"
+                            />
+                            <input type="submit" value="Search" />
+                        </form>
+                    </section>
+                </div>
 
                 <ArtistList data={this.state.data} filteredData={this.state.filteredData} />
 
@@ -108,24 +110,32 @@ var ArtistsBlock = React.createClass({
 });
 
 var FilteredData = React.createClass({
+
     render:function(){
         var artistProperties = this.props.data;
+        var imageUrl = "http://iscale.iheart.com/catalog/artist/" + this.props.data.artistId + "?ops=fit(250,0)";
         return(
 
             <div className="responsive">
-                    <div>{this.props.index}
-                    <pre className="responsive-img wrapper">{JSON.stringify(artistProperties, null, 15)}</pre></div>
+                <div className="row">
+                    <div className="text">
+                        <h3> {this.props.data.artistName}</h3>
+                    </div>
+                </div>
+
+                <div className= "margin-img" > <img src={imageUrl} className="responsive-img wrapper" /> </div>
             </div>
         );
     }
 });
 
 var Artist = React.createClass({
+
     render: function(){
 
         return(
             <div className="responsive">
-                <div class="text">
+                <div className="text">
                     <h3> {this.props.data.artistName}</h3>
                     {this.props.data.artistDescription}
                 </div>
@@ -137,6 +147,26 @@ var Artist = React.createClass({
 });
 
 var ArtistList = React.createClass({
+
+        getFilteredArtistsFormat(){
+             var artists;
+             console.log("Returning filtered artists");
+             console.log(this.props.filteredData);
+             if(this.props.filteredData.artists.length==0){
+                 console.log("NO RESUTS");
+                 artists = <h3> No artists found. </h3>;
+             }else {
+                 artists = this.props.filteredData.artists.map(function(artistAllData, index){
+                    if(index<6){
+                        return (
+                            <FilteredData key={index} data={artistAllData} index={index}/>
+                            );
+                        }else
+                            return;
+                        });
+             }
+             return artists;
+        },
 
         render: function(){
             var queryValue = this.props.query;
@@ -156,24 +186,11 @@ var ArtistList = React.createClass({
                      });
             }else{
 
-                console.log("Returning filtered artists");
-                console.log(this.props.filteredData);
-                if(this.props.filteredData.artists.length==0){
-                    console.log("NO RESUTS");
-                    artists = <h3> No artists found. </h3>;
-                }else {
-                    artists = this.props.filteredData.artists.map(function(artistAllData, index){
-                        if(index<6){
-                            return (
-                            <FilteredData key={index} data={artistAllData} index={index}/>
-                            );
-                        }else
-                            return;
-                    });
-                }
+                artists = this.getFilteredArtistsFormat();
             }
 
             return (
+
                 <div className="container">
                     <div className="artistList">
                     <div className="row">
