@@ -19,21 +19,32 @@ var ArtistsBlock = React.createClass({
           }.bind(this)
         });
 
-     },
+    },
 
-
-    handleSubmit: function(event) {
-
-        event.preventDefault();
-
+    updateState: function(){
         this.setState({
             query: this.refs.box.value,
             filteredData: this.state.filteredData,
             data: this.state.data
         });
+    },
+
+    clearQueryState: function(){
+        this.setState({
+            query:'',
+            filteredData: this.state.filteredData,
+            data: this.state.data
+        })
+    },
+
+    handleSubmit: function(event) {
 
         var query = this.refs.box.value;
         var urlSearch = this.props.url + "/search" + "?keywords="+ query;
+
+        event.preventDefault();
+
+        this.updateState();
 
         this.refs.box.value = "";
 
@@ -52,11 +63,8 @@ var ArtistsBlock = React.createClass({
             }.bind(this)
         });
 
-        this.setState({
-            query:'',
-            filteredData: this.filteredData,
-            data: this.state.data
-        })
+        this.clearQueryState();
+
 
     },
 
@@ -82,6 +90,7 @@ var ArtistsBlock = React.createClass({
     },
 
     render: function() {
+
         return (
 
             <div className="artistsBlock">
@@ -112,8 +121,9 @@ var ArtistsBlock = React.createClass({
 var FilteredData = React.createClass({
 
     render:function(){
-        var artistProperties = this.props.data;
+
         var imageUrl = "http://iscale.iheart.com/catalog/artist/" + this.props.data.artistId + "?ops=fit(250,0)";
+
         return(
 
             <div className="responsive">
@@ -127,6 +137,7 @@ var FilteredData = React.createClass({
             </div>
         );
     }
+
 });
 
 var Artist = React.createClass({
@@ -148,53 +159,65 @@ var Artist = React.createClass({
 
 var ArtistList = React.createClass({
 
+        getDefaultArtistsFormat(){
+            console.log("Default artists");
+            var defaultArtists = this.props.data.map(function(artist) {
+                return (
+                    <Artist key={artist.artistId} data={artist}/>
+                );
+            });
+
+            return defaultArtists;
+        },
+
         getFilteredArtistsFormat(){
+
              var artists;
+
              console.log("Returning filtered artists");
              console.log(this.props.filteredData);
              if(this.props.filteredData.artists.length==0){
                  console.log("NO RESUTS");
+
                  artists = <h3> No artists found. </h3>;
+
              }else {
+
                  artists = this.props.filteredData.artists.map(function(artistAllData, index){
-                    if(index<6){
-                        return (
-                            <FilteredData key={index} data={artistAllData} index={index}/>
-                            );
-                        }else
+                        if(index<6){
+                            return ( <FilteredData key={index} data={artistAllData} index={index}/> );
+                        }else{
                             return;
-                        });
+                        }
+                    });
              }
              return artists;
         },
 
-        render: function(){
-            var queryValue = this.props.query;
-            var artists;
+        artists(queryValue){
+
+            var artistsFormat;
 
             if(queryValue === undefined &&
-                (this.props.filteredData == null
-                || this.props.filteredData.length == 0
-                || this.props.filteredData.artists == null )){
+                            (this.props.filteredData == null
+                            || this.props.filteredData.length == 0
+                            || this.props.filteredData.artists == null )){
 
-                console.log("Default artists");
-                     artists = this.props.data.map(function(artist) {
-                        return (
-                            <Artist key={artist.artistId} data={artist}/>
-                        );
-
-                     });
+                artistsFormat = this.getDefaultArtistsFormat();
             }else{
-
-                artists = this.getFilteredArtistsFormat();
+                artistsFormat = this.getFilteredArtistsFormat();
             }
 
+            return artistsFormat;
+        },
+
+        render: function(){
             return (
 
                 <div className="container">
                     <div className="artistList">
                     <div className="row">
-                        {artists}
+                        {this.artists(this.props.query)}
                     </div>
                     </div>
                 </div>
