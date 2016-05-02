@@ -1,19 +1,19 @@
 
-brew install node
-node -v
-npm -v
+Install node and npm
+    $ brew install node
+    $ node -v
+    $ npm -v
 
 Install dependencies
-npm install
+    $ npm install
 
 Run server
-node server.js
+    $node server.js
 
-Open web app at
+Open web app at:
+    localhost:8080
 
-localhost:8080
-
-Search api endpoint
+You can all see all the raw json data or search endpoint at:
 http://localhost:8080/api/artists/search?keywords=taylor
 
 
