@@ -17,5 +17,11 @@ You can all see all the raw json data or search endpoint at:
 http://localhost:8080/api/artists/search?keywords=taylor
 
 
-
+Tech stack
+Node
+npm
+bootstrap
+React
+express
+body-parser
 
