@@ -2,7 +2,6 @@ var ArtistsBlock = React.createClass({
 
     loadArtistsFromServer: function() {
 
-        console.log("Checking Filtered at load" + this.state.filteredData);
         $.ajax({
           url: this.props.url,
           dataType: 'json',
@@ -160,7 +159,6 @@ var Artist = React.createClass({
 var ArtistList = React.createClass({
 
         getDefaultArtistsFormat(){
-            console.log("Default artists");
             var defaultArtists = this.props.data.map(function(artist) {
                 return (
                     <Artist key={artist.artistId} data={artist}/>
@@ -174,10 +172,7 @@ var ArtistList = React.createClass({
 
              var artists;
 
-             console.log("Returning filtered artists");
-             console.log(this.props.filteredData);
              if(this.props.filteredData.artists.length==0){
-                 console.log("NO RESUTS");
 
                  artists = <h3> No artists found. </h3>;
 
@@ -216,9 +211,9 @@ var ArtistList = React.createClass({
 
                 <div className="container">
                     <div className="artistList">
-                    <div className="row">
+
                         {this.artists(this.props.query)}
-                    </div>
+
                     </div>
                 </div>
             );
